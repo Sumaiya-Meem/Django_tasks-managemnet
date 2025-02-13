@@ -7,12 +7,14 @@
   </head>
   <body>
       <form action="" method="POST">
-                  {% csrf_token %}
-          <label for="">Title</label>
-          <input type="text" name="title"> <br>
-          <label for="">Number</label>
-          <input type="number" name="number">
+          {% csrf_token %}
+          {{form.as_p}}
           <button type="submit">Submit</button>
       </form>
+      <div>
+           {% if message %}
+              <p>{{message}}</p>
+           {% endif %}
+      </div>
   </body>
 </html>
