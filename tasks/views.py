@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from tasks.form import TaskModelForm
-from tasks.models import Employee
+from tasks.models import Task
 # Create your views here.
 
 def manager_dashboard(request):
@@ -19,10 +19,20 @@ def create_task(request):
         
         if task_form.is_valid():
                   task_form.save()
+                  task_form = TaskModelForm()
                   return render(request, "task_form.html",{"form": task_form,"message":"task added successfully"})
                   
                   
     context = {"form": task_form}
     return render(request, "task_form.html", context)
+
+def view_task(request):
+                  # retrive all data from tasks model
+     tasks=Task.objects.all()
+     
+     #retrieve specific task
+     task3=Task.objects.get(id=3)
+     return render(request,"show_task.html",{"tasks":tasks,"task3":task3})
+     
 
 
