@@ -15,6 +15,7 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     start_date = models.DateField()
+    # task_Set
     
     
     def __str__(self): 

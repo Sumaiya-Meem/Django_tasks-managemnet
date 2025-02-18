@@ -7,16 +7,40 @@
   </head>
   <body>
         <div>
-           <ul>
-                  {% for task  in tasks  %}
-                    <li>{{task.status}}</li>
+           {% comment %} <ol> {% endcomment %}
+                  {% comment %} {% for task  in tasks  %}
+                    <li>
+                                    <p>Title:  {{task.title}}</p>
+                                    <p>Project:  {{task.project.name}}</p>
+                  </li>
+                  {% endfor %} {% endcomment %}
+
+                  {% comment %} {% for task in tasks  %}
+                    <li>
+                                    <p>Title:  {{task.title}}</p>
+                                    {% for emp in task.assigned_to.all %}
+                                         <ul>
+                                                      <li>{{emp.name}}</li>
+                                                      <li>{{emp.email}}</li>
+                                         </ul>
+                                    {% endfor %}
+                  </li>
+                  {% endfor %} {% endcomment %}
+           {% comment %} </ol> {% endcomment %}
+
+           {% comment %} Show all task in one project {% endcomment %}
+
+           <ol>
+                  {% for i in  projects %}
+                    <li>
+                                    <p>{{i.name}}</p>
+                                    <p>{{i.num_task}}</p>
+                    </li>
                   {% endfor %}
-           </ul>
+           </ol>
         </div>    
         
         
-        <div>
-                  {{task3}}
-        </div>
+        
   </body>
 </html>
