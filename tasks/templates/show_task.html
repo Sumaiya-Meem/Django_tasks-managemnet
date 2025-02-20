@@ -31,13 +31,22 @@
            {% comment %} Show all task in one project {% endcomment %}
 
            <ol>
-                  {% for i in  projects %}
-                    <li>
-                                    <p>{{i.name}}</p>
-                                    <p>{{i.num_task}}</p>
-                    </li>
+                  {% for task in tasks %}
+                      <li>
+                          <p><strong>Task:</strong> {{ task.title }}</p>
+                          <p>Project ID: {{task.project.id}}</p>
+                          {% for emp  in task.assigned_to.all %}
+                          <ul>
+                                    <li><strong>Assigned to:</strong> {{ emp.name }}</li>
+                          </ul>
+                          {% endfor %}
+                      </li>
+                  {% empty %}
+                      <li>No tasks found for this employee.</li>
                   {% endfor %}
-           </ol>
+              </ol>
+              
+              
         </div>    
         
         

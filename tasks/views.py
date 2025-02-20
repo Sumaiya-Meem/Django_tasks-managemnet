@@ -8,7 +8,27 @@ from django.db.models import Q,Count,Max,Min,Avg
 # Create your views here.
 
 def manager_dashboard(request):
-   return render(request,"dashboard/manager_dashboard.html")
+   
+   tasks=Task.objects.all()
+   
+#    get task count
+   total_task=tasks.count()
+# pending task
+   pending_task=Task.objects.filter(status="PENDING").count()
+   process_task=Task.objects.filter(status="IN_PROGRESS").count()
+   completed_task=Task.objects.filter(status="COMPLETED").count()
+   
+   
+   context={
+                     "total_tasks":total_task,
+                     "tasks":tasks,
+                     "pending_task":pending_task,
+                     "process_task":process_task,
+                     "completed_task":completed_task
+   }
+   
+   
+   return render(request,"dashboard/manager_dashboard.html",context)
 
 def user_dashboard(request):
    return render(request,"dashboard/user_dashboard.html")
@@ -60,15 +80,20 @@ def view_task(request):
 
 #       prefetch_related work on (reverse ForeignKey)
 #      tasks=Project.objects.prefetch_related('task_set').all()
+     
+   
 
 
 #       prefetch_related work on  ManytoMany
-#      tasks=Task.objects.prefetch_related('assigned_to').all()
+ 
+
+ tasks = Task.objects.filter(project_id=1).prefetch_related('assigned_to')
+ return render(request, "show_task.html", {"tasks": tasks})
 
 #      task_count=Task.objects.aggregate(num_task=Count('id'))
 
-     projects=Project.objects.annotate(num_task=Count('task')).order_by('num_task')
-     return render(request,"show_task.html",{"projects":projects})
+#      projects=Project.objects.annotate(num_task=Count('task')).order_by('num_task')
+#      return render(request,"show_task.html",{"projects":projects})
      
      
 
