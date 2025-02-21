@@ -8,27 +8,41 @@ from django.db.models import Q,Count,Max,Min,Avg
 # Create your views here.
 
 def manager_dashboard(request):
+# getting all task count
+   # pending_task=Task.objects.filter(status="PENDING").count()
+   # process_task=Task.objects.filter(status="IN_PROGRESS").count()
+   # completed_task=Task.objects.filter(status="COMPLETED").count()
    
-   tasks=Task.objects.all()
+   type=request.GET.get('type','all')
+   # print(type)
+# optimize getting all task count
+   counts=Task.objects.aggregate(
+            total=Count('id'),
+            completed_task=Count('id',filter=Q(status='COMPLETED')),
+            process_task=Count('id',filter=Q(status='IN_PROGRESS')),
+            pending_task=Count('id',filter=Q(status='PENDING')),
+            )
    
-#    get task count
-   total_task=tasks.count()
-# pending task
-   pending_task=Task.objects.filter(status="PENDING").count()
-   process_task=Task.objects.filter(status="IN_PROGRESS").count()
-   completed_task=Task.objects.filter(status="COMPLETED").count()
+   # retriving task data
+   based_query=tasks=Task.objects.select_related('details').prefetch_related('assigned_to')
+   
+   if type=='completed_task':
+      tasks=based_query.filter(status="COMPLETED")
+   elif type=='process_task':
+      tasks=based_query.filter(status="IN_PROGRESS")
+   elif type=='pending_task':
+      tasks=based_query.filter(status="PENDING")
+   elif type=='all':
+      tasks=based_query.all()
    
    
    context={
-                     "total_tasks":total_task,
-                     "tasks":tasks,
-                     "pending_task":pending_task,
-                     "process_task":process_task,
-                     "completed_task":completed_task
-   }
-   
-   
+            "tasks":tasks,
+            "total_tasks":counts
+   } 
    return render(request,"dashboard/manager_dashboard.html",context)
+
+
 
 def user_dashboard(request):
    return render(request,"dashboard/user_dashboard.html")
@@ -50,12 +64,14 @@ def create_task(request):
     return render(request, "task_form.html", context)
 
 def view_task(request):
+   tasks = Task.objects.filter(project_id=1).prefetch_related('assigned_to')
+   return render(request, "show_task.html", {"tasks": tasks})
+
                   # retrive all data from tasks model
 #      tasks=Task.objects.all()
      
 #      #retrieve specific task
 #      task3=Task.objects.get(id=3)
-
 
 # show the tasks which is pending
 #      tasks=Task.objects.filter(status="PENDING")
@@ -63,10 +79,8 @@ def view_task(request):
 # show the tasks which is pdue date is today
 #      tasks=Task.objects.filter(due_date=date.today())
 
-
 # show the task details which priority is not low
 #     tasks=TaskDetail.objects.exclude(priority="L")
-     
  
 # show the task details which status is pending or progess
 #      tasks=Task.objects.filter(Q(status="PENDING") | Q(status="IN_PROGRESS"))
@@ -80,15 +94,10 @@ def view_task(request):
 
 #       prefetch_related work on (reverse ForeignKey)
 #      tasks=Project.objects.prefetch_related('task_set').all()
-     
-   
 
 
 #       prefetch_related work on  ManytoMany
- 
 
- tasks = Task.objects.filter(project_id=1).prefetch_related('assigned_to')
- return render(request, "show_task.html", {"tasks": tasks})
 
 #      task_count=Task.objects.aggregate(num_task=Count('id'))
 
