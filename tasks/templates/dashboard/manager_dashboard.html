@@ -3,25 +3,33 @@
  {% block tasks %}
  
  <!-- Task Table start -->
- <div class="bg-white rounded-xl shadow-sm mb-11">
-  <div
-    class="grid grid-cols-4 p-4 border-b border-gray-100 text-sm text-gray-500"
-  >
+ <div class="bg-white rounded-xl shadow-sm mb-11 overflow-x-auto">
+  <div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="px-2 py-1 {% if message.tags == "success" %} bg-gray-200 text-red-600 font-bold {% endif %}">{{message}}</div>
+    {% endfor %}
+    
+    {% endif %}
+  </div>
+  <div class="grid grid-cols-4 p-1 border-b border-gray-100 text-sm text-gray-500 min-w-[800px]">
     <div>TASK TITLE</div>
     <div>PRIORITY</div>
     <div>TEAM</div>
     <div>CREATED AT</div>
+    {% comment %} <div>Action</div> {% endcomment %}
   </div>
 
   <!-- Task Items  -->
-  <div class="divide-y divide-gray-100">
+  <div class="divide-y divide-gray-100 overflow-x-auto">
     <!-- Task 1 -->
      {% for task in  tasks %}
-     <div class="grid grid-cols-4 gap-4 p-4 items-center">
+     <div class="grid grid-cols-4 gap-4 p-4 items-center min-w-[800px]">
       <div class="flex items-center gap-2">
         <div class="w-2 h-2 rounded-full bg-green-500"></div>
         <div>
-          <span>{{task.title}}</span>
+          <span class="">{{task.title}}</span>
+          
         </div>
       </div>
       <div>
@@ -42,9 +50,36 @@
           
         </div>
       </div>
-      <div class="">
-            <span class="text-gray-500">{{task.created_at|timesince}}</span>
-      </div>
+      {% comment %} <div class="">
+        <span class="text-gray-500">{{task.created_at|timesince}}</span>
+
+        <form action="{% url 'update-task' task.id %}" method="post">
+          {% csrf_token %}
+          <span>       
+              <button  type="submit" class="bg-green-500 text-white px-3 py-1 rounded-lg mr-1">Edit<button>    
+          </span>
+        </form>
+  </div> {% endcomment %}
+  <div class="">
+    <span class="text-gray-500">{{ task.created_at|timesince }}</span>
+  
+    <form action="{% url 'delete-task' task.id %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class=" text-red-500 bg-gray-400 p-2 text-sm rounded-lg">
+        Delete
+      </button>
+    </form>
+    
+    <a href="{% url 'update-task' task.id %}" class="bg-green-500 text-white p-2 text-sm rounded-lg">
+      Edit
+    </a>
+    
+   
+  </div>
+  
+      {% comment %} <div>
+        <button>Edit</button>
+      </div> {% endcomment %}
     </div>
      
      {% endfor %}

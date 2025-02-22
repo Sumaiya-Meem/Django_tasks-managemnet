@@ -1,5 +1,5 @@
 from django import forms
-from tasks.models import Task
+from tasks.models import Task,TaskDetail
 
 # class TaskForm(forms.Form):
 #     title = forms.CharField(max_length=250, label="Task Title")
@@ -70,6 +70,17 @@ class TaskModelForm(FormMixin,forms.ModelForm):
                                      'due_date': forms.SelectDateWidget,
                                      'assigned_to': forms.CheckboxSelectMultiple
                                     }
+
+class TaskDetailModelForm(FormMixin,forms.ModelForm):
+    class Meta:
+        model=TaskDetail
+        fields=['priority','notes']
+        
+    def __init__(self,*arg,**kwarg):
+                   super().__init__(*arg, **kwarg)   
+                   self.apply_styled_widget()
+        
+        
                                     
                         
 

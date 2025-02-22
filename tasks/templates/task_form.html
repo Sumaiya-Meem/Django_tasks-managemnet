@@ -13,15 +13,21 @@
     <p class="text-red-600">Mee</p>
     {% endcomment %}
     <div class="w-1/2 mx-auto">
-      <form action="" method="POST">
-        {% csrf_token %} {{form.as_p}}
-        <button type="submit" class="bg-blue-500 text-white rounded-lg font-semibold p-3 mt-6 ">Submit</button>
-      </form>
       <div>
-        {% if message %}
-        <p>{{message}}</p>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="px-2 py-1 {% if message.tags == "success" %} bg-gray-200 text-green-600 font-bold {% endif %}">{{message}}</div>
+        {% endfor %}
+        
         {% endif %}
       </div>
+      <form action="" method="POST">
+        {% csrf_token %} 
+        {{task_form}}
+        {{task_detail_form}}
+        <button type="submit" class="bg-blue-500 text-white rounded-lg font-semibold p-3 mt-6 ">Submit</button>
+      </form>
+      
     </div>
   </body>
 </html>
