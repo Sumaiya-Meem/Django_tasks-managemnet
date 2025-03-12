@@ -16,7 +16,7 @@
     <div>TASK TITLE</div>
     <div>PRIORITY</div>
     <div>TEAM</div>
-    <div>CREATED AT</div>
+    <div>ACTION</div>
     {% comment %} <div>Action</div> {% endcomment %}
   </div>
 
@@ -60,17 +60,17 @@
           </span>
         </form>
   </div> {% endcomment %}
-  <div class="">
-    <span class="text-gray-500">{{ task.created_at|timesince }}</span>
+  <div class="flex gap-1 items-center">
+    {% comment %} <span class="text-gray-500">{{ task.created_at|timesince }}</span> {% endcomment %}
   
     <form action="{% url 'delete-task' task.id %}" method="POST">
       {% csrf_token %}
-      <button type="submit" class=" text-red-500 bg-gray-400 p-2 text-sm rounded-lg">
+      <button type="submit" class=" text-white bg-red-700 p-2 text-sm rounded-lg">
         Delete
       </button>
     </form>
     
-    <a href="{% url 'update-task' task.id %}" class="bg-green-500 text-white p-2 text-sm rounded-lg">
+    <a href="{% url 'update-task' task.id %}" class="bg-blue-700 text-white p-2 text-sm rounded-lg m-1">
       Edit
     </a>
     

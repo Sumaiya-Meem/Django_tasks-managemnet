@@ -5,13 +5,12 @@ from tasks.models import *
 from datetime import date
 from django.db.models import Q,Count,Max,Min,Avg
 from django.contrib import messages
+
 # Create your views here.
 
 def manager_dashboard(request):
 # getting all task count
    # pending_task=Task.objects.filter(status="PENDING").count()
-   # process_task=Task.objects.filter(status="IN_PROGRESS").count()
-   # completed_task=Task.objects.filter(status="COMPLETED").count()
    
    type=request.GET.get('type','all')
    # print(type)

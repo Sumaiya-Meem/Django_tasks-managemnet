@@ -75,10 +75,7 @@ class TaskDetailModelForm(FormMixin,forms.ModelForm):
     class Meta:
         model=TaskDetail
         fields=['priority','notes']
-        
-    def __init__(self,*arg,**kwarg):
-                   super().__init__(*arg, **kwarg)   
-                   self.apply_styled_widget()
+    
         
         
                                     

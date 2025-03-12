@@ -6,25 +6,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+
   </head>
   <body>
-    {% comment %}
-    <p class="text-red-600">Mee</p>
-    {% endcomment %}
+    
     <div class="w-1/2 mx-auto">
       <div>
         {% if messages %}
         {% for message in messages %}
-        <div class="px-2 py-1 {% if message.tags == "success" %} bg-gray-200 text-green-600 font-bold {% endif %}">{{message}}</div>
+        <div class="px-2 py-1 text-green-600">{{message}}</div>
         {% endfor %}
         
         {% endif %}
       </div>
       <form action="" method="POST">
         {% csrf_token %} 
-        {{task_form}}
-        {{task_detail_form}}
+        {{ task_form.as_p }}
+        {{ task_detail_form.as_p }}
+
         <button type="submit" class="bg-blue-500 text-white rounded-lg font-semibold p-3 mt-6 ">Submit</button>
       </form>
       
