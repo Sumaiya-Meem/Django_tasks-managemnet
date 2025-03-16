@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,HttpResponse
 from users.forms import CustomRegisterForm,LoginForm,AssignRoleForm,CreateGroupForm
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.contrib.auth.tokens import default_token_generator
 
 
@@ -97,5 +97,7 @@ def create_group(request):
 
     return render(request, 'admin/create_group.html', {'form': form})
    
-
+def group_list(request):
+    groups = Group.objects.all()
+    return render(request, 'admin/group_list.html', {'groups': groups})
 
