@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,HttpResponse
 
-from users.forms import CustomRegisterForm,LoginForm
+from users.forms import CustomRegisterForm,LoginForm,AssignRoleForm,CreateGroupForm
 from django.contrib import messages
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import User
@@ -65,7 +65,37 @@ def activate_user(request, user_id, token):
         return HttpResponse('User not found')
      
 def admin_dashboard(request):
-   return render(request,'admin/dashboard.html')
+   users=User.objects.all()
+   print(users)
+   return render(request,'admin/dashboard.html',{'users':users})
+
+def assign_role(request,user_id):
+   user=User.objects.get(id=user_id)
+   
+   form=AssignRoleForm()
+   if request.method=='POST':
+      form=AssignRoleForm(request.POST)
+      if form.is_valid():
+         role=form.cleaned_data.get('role')
+         user.groups.clear()
+         user.groups.add(role)
+         messages.success(request,f"{user.username} you are assigned to {role.name} role")
+         return redirect('admin-dashboard')
+      
+   return render(request,'admin/assign_role.html',{'form':form})
+
+
+def create_group(request):
+    form = CreateGroupForm()
+    if request.method == 'POST':
+        form = CreateGroupForm(request.POST)
+
+        if form.is_valid():
+            group = form.save()
+            messages.success(request, f"Group {group.name} has been created successfully")
+            return redirect('create-group')
+
+    return render(request, 'admin/create_group.html', {'form': form})
    
 
 

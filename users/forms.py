@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group,Permission
 import re
 from tasks.form import FormMixin
 from django.contrib.auth.forms import AuthenticationForm
@@ -82,7 +82,20 @@ class LoginForm(FormMixin, AuthenticationForm):
         super().__init__(*arg, **kwargs)
         self.fields['username'].widget.attrs.update({'autocomplete': 'off', 'value': ''})
             
-         
-         
-         
-         
+class AssignRoleForm(FormMixin, forms.Form):
+    role = forms.ModelChoiceField(
+        queryset=Group.objects.all(),
+        empty_label="Select a Role"
+    ) 
+    
+class CreateGroupForm(FormMixin, forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Assign Permission'
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']

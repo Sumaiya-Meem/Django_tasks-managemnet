@@ -16,7 +16,7 @@
           >
           <div class="hidden md:flex space-x-4">
             <a
-              href="admin-dashboard.html"
+              href="{% url 'admin-dashboard' %}"
               class="text-gray-600 hover:text-gray-800"
               >Dashboard</a
             >
@@ -25,7 +25,7 @@
               >Groups</a
             >
             <a
-              href="create-group.html"
+              href="{% url 'create-group' %}"
               class="text-gray-600 hover:text-gray-800"
               >Create Group</a
             >
@@ -36,22 +36,18 @@
                 id="user-menu-button"
                 class="flex items-center focus:outline-none"
               >
-                <img
-                  class="h-8 w-8 rounded-full object-cover"
-                  src="https://placekitten.com/100/100"
-                  alt="User avatar"
-                />
+              <img class="h-8 w-8 rounded-full object-cover" src="{% static 'images/user-avatar.avif' %}" alt="User avatar" onerror="this.onerror=null; this.src='https://placekitten.com/100/100';"/>
               </button>
               <div
                 id="user-menu"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden"
               >
                 <a
-                  href="manager-dashboard.html"
+                  href="{% url 'admin-dashboard' %}"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >Dashboard</a
                 >
-                <form method="post" action="logout.html">
+                <form method="post" action="{% url 'logout' %}">
                   <button
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
@@ -84,7 +80,7 @@
           </div>
         </div>
         <div id="mobile-menu" class="md:hidden hidden mt-4">
-          <a href="#" class="block py-2 text-gray-600 hover:text-gray-800"
+          <a href="{% url 'admin-dashboard' %}" class="block py-2 text-gray-600 hover:text-gray-800"
             >Dashboard</a
           >
           <a href="#" class="block py-2 text-gray-600 hover:text-gray-800"
@@ -93,7 +89,7 @@
           <a href="#" class="block py-2 text-gray-600 hover:text-gray-800"
             >Groups</a
           >
-          <a href="#" class="block py-2 text-gray-600 hover:text-gray-800"
+          <a href="{% url 'create-group' %}" class="block py-2 text-gray-600 hover:text-gray-800"
             >Create Group</a
           >
         </div>
@@ -101,9 +97,9 @@
     </header>
 
     <main>
-      <div class="container mx-auto px-6 py-4">
-        <p>Content goes here...</p>
-      </div>
+      {% block content %}
+         {% include "admin/user_list.html" %}
+      {% endblock content %}
     </main>
 
     <script>
