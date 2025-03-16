@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 import re
 from tasks.form import FormMixin
+from django.contrib.auth.forms import AuthenticationForm
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -18,11 +19,16 @@ class RegisterForm(UserCreationForm):
 
 
 class CustomRegisterForm(FormMixin,forms.ModelForm):
-     password=forms.CharField(widget=forms.PasswordInput)
-     confirm_password=forms.CharField(widget=forms.PasswordInput)
+     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'value': ''}))
+     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'value': ''}))
      class Meta:
          model=User
          fields= ['username','first_name','last_name', 'email', 'password','confirm_password']
+         
+         def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields['username'].widget.attrs.update({'autocomplete': 'off', 'value': ''})
+          self.fields['email'].widget.attrs.update({'autocomplete': 'off', 'value': ''})
          
      
      def clean_email(self):
@@ -67,7 +73,14 @@ class CustomRegisterForm(FormMixin,forms.ModelForm):
 
             return cleaned_data
             
-             
+
+class LoginForm(FormMixin, AuthenticationForm):
+   
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'value': ''}))
+    
+    def __init__(self, *arg, **kwargs):
+        super().__init__(*arg, **kwargs)
+        self.fields['username'].widget.attrs.update({'autocomplete': 'off', 'value': ''})
             
          
          
