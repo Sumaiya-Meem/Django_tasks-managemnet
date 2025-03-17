@@ -5,9 +5,16 @@ from tasks.models import *
 from datetime import date
 from django.db.models import Q,Count,Max,Min,Avg
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
 # Create your views here.
 
+def is_manager(user):
+   return user.groups.filter(name='Manager').exists()
+
+def is_employee(user):
+   return user.groups.filter(name='Employee').exists()
+
+@user_passes_test(is_manager,login_url='no-permission')
 def manager_dashboard(request):
 # getting all task count
    # pending_task=Task.objects.filter(status="PENDING").count()
@@ -42,10 +49,13 @@ def manager_dashboard(request):
    return render(request,"dashboard/manager_dashboard.html",context)
 
 
-
-def user_dashboard(request):
+@user_passes_test(is_employee,login_url='no-permission')
+def employee_dashboard(request):
    return render(request,"dashboard/user_dashboard.html")
 
+
+@login_required
+@permission_required("tasks.add_task",login_url='no-permission')
 def create_task(request):
 #     employees = Employee.objects.all()  # Fetch all employees
     task_form = TaskModelForm()
@@ -68,6 +78,8 @@ def create_task(request):
     context = {"task_form": task_form,"task_detail_form":task_detail_form}
     return render(request, "task_form.html", context)
 
+@login_required
+@permission_required("tasks.change_task",login_url='no-permission')
 def update_task(request,id):
     task=Task.objects.get(id=id)
     
@@ -92,6 +104,9 @@ def update_task(request,id):
     context = {"task_form": task_form,"task_detail_form":task_detail_form}
     return render(request, "task_form.html", context)
 
+
+@login_required
+@permission_required("tasks.delete_task",login_url='no-permission')
 def delete_task(request,id):
    if request.method=='POST':
       task=Task.objects.get(id=id)
@@ -102,7 +117,10 @@ def delete_task(request,id):
    else:
     messages.error(request,"Something went wrong")
     return redirect('manager-dashboard')
-      
+
+
+@login_required
+@permission_required("tasks.view_task",login_url='no-permission')
 def view_task(request):
    tasks = Task.objects.filter(project_id=1).prefetch_related('assigned_to')
    return render(request, "show_task.html", {"tasks": tasks})
