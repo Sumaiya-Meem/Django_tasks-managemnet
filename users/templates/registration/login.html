@@ -1,15 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
-  </head>
 
-  <body class="flex justify-center items-center  bg-gray-100">
-    <div class="w-[500px] p-6 bg-white border-gray-200 shadow-lg border-2 rounded-lg mt-4">
+{% extends "base.html" %}
+{% block content %}
+
+
+  <div class="flex justify-center items-center  bg-gray-100 m-2">
+    <div class="w-[500px] p-6 bg-white border-gray-200 shadow-lg border-2 rounded-lg my-4 mx-auto">
       <h1 class="text-xl font-bold text-center mb-4 text-blue-800">Login Here !</h1>
       {% if messages %}
             {% for message in messages %}
@@ -18,7 +13,7 @@
         {% endif %}
 
       
-      <form action="" method="POST" class="space-y-4">
+      <form action="" method="POST" class="space-y-4 m-3 ">
 
         {% csrf_token %}     
         {{form}}
@@ -29,5 +24,7 @@
         </button>
       </form>
     </div>
-  </body>
-</html>
+  </div>
+
+
+{% endblock content %}

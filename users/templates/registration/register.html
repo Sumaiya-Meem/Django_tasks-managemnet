@@ -1,49 +1,42 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
-    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
-  </head>
-  <body>
-    <div class="w-1/2 mx-auto">
-      <h1>Register Here!</h1>
-        {% if messages %}
-          {% for message in messages %}
-          <p style="color: green;">
-            {{ message }}
-          </p>
-          {% endfor %}
-        {% endif %}
-
-        {% if  form.non_field_errors%}
-          {% for error in form.non_field_errors %}
-             {{error}}
-          {% endfor %}
-          
-        {% endif %}
-    <form method="POST">
-      {% csrf_token %} 
-      {% for field in form %}
-       <p>
-        <label for="{{field.id_for_label}}">{{field.label}}</label>
-        {{field}} 
-
-        {% if field.errors %} 
-            {% for error in field.errors %}
-               {{error}}
-            {% endfor %} 
-        {% endif %}
-        
-        
-
-       </p>
-
+{% extends "base.html" %}
+    
+{% block content %}
+<div class="flex justify-center items-center  bg-gray-100 m-2 ">
+  <div class="w-[500px] p-6 bg-white border-gray-200 shadow-lg border-2 rounded-lg my-4 mx-auto ">
+    <h1 class="text-xl font-bold text-center mb-4 text-blue-800">Register Here!</h1>
+    {% if messages %}
+      {% for message in messages %}
+      <p style="color: green;">
+        {{ message }}
+      </p>
       {% endfor %}
-      <button type="submit">Sign Up</button>
-    </form>
-    </div>
-  </body>
-</html>
+    {% endif %}
+
+    {% if  form.non_field_errors%}
+      {% for error in form.non_field_errors %}
+         {{error}}
+      {% endfor %}
+      
+    {% endif %}
+<form method="POST">
+  {% csrf_token %} 
+  {% for field in form %}
+   <p>
+    <label for="{{field.id_for_label}}">{{field.label}}</label>
+    {{field}} 
+
+    {% if field.errors %} 
+        {% for error in field.errors %}
+           {{error}}
+        {% endfor %} 
+    {% endif %}
+    
+   </p>
+
+  {% endfor %}
+  <button type="submit" class="mt-4 bg-blue-700 text-white py-2 rounded w-full font-semibold>Sign Up</button>
+</form>
+</div>
+</div>
+
+{% endblock content %}
