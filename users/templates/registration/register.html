@@ -2,7 +2,7 @@
     
 {% block content %}
 <div class="flex justify-center items-center  bg-gray-100 m-2 ">
-  <div class="w-[500px] p-6 bg-white border-gray-200 shadow-lg border-2 rounded-lg my-4 mx-auto ">
+  <div class="w-[500px] p-6 bg-white border-gray-200 shadow-lg border-2 rounded-lg my-4 mx-auto space-y-3">
     <h1 class="text-xl font-bold text-center mb-4 text-blue-800">Register Here!</h1>
     {% if messages %}
       {% for message in messages %}
@@ -34,7 +34,11 @@
    </p>
 
   {% endfor %}
-  <button type="submit" class="mt-4 bg-blue-700 text-white py-2 rounded w-full font-semibold>Sign Up</button>
+  <button 
+          type="submit" 
+          class="mt-4 bg-blue-700 text-white py-2 rounded w-full font-semibold">
+          Register
+        </button>
 </form>
 </div>
 </div>

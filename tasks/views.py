@@ -127,41 +127,34 @@ def view_task(request):
 
                   # retrive all data from tasks model
 #      tasks=Task.objects.all()
-     
 #      #retrieve specific task
 #      task3=Task.objects.get(id=3)
-
 # show the tasks which is pending
-#      tasks=Task.objects.filter(status="PENDING")
-     
+#      tasks=Task.objects.filter(status="PENDING") 
 # show the tasks which is pdue date is today
 #      tasks=Task.objects.filter(due_date=date.today())
-
 # show the task details which priority is not low
 #     tasks=TaskDetail.objects.exclude(priority="L")
- 
 # show the task details which status is pending or progess
-#      tasks=Task.objects.filter(Q(status="PENDING") | Q(status="IN_PROGRESS"))
-     
+#      tasks=Task.objects.filter(Q(status="PENDING") | Q(status="IN_PROGRESS"))   
 #      select related field (ForeignKey,OnetoOneField)
 #      OnetoOneField
 #      tasks=TaskDetail.objects.select_related('task').all()
-     
-     #      ForeignKey ()
+   #      ForeignKey ()
 #      tasks=Task.objects.select_related('project').all()
-
 #       prefetch_related work on (reverse ForeignKey)
 #      tasks=Project.objects.prefetch_related('task_set').all()
 
-
 #       prefetch_related work on  ManytoMany
-
-
 #      task_count=Task.objects.aggregate(num_task=Count('id'))
-
 #      projects=Project.objects.annotate(num_task=Count('task')).order_by('num_task')
 #      return render(request,"show_task.html",{"projects":projects})
      
+@login_required
+@permission_required("tasks.view_task",login_url='no-permission')
+def task_details(request,task_id):
+   task=Task.objects.get(id=task_id)
+   return render(request,'task_details.html',{'task':task})
      
 
 
