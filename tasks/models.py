@@ -31,7 +31,8 @@ class Task(models.Model):
     ]
     
    project=models.ForeignKey(Project,on_delete=models.CASCADE,default=1)  # Many to One Relationship
-   assigned_to=models.ManyToManyField(User,related_name="tasks") # Many to Many Relationship
+#    assigned_to=models.ManyToManyField(Employee,related_name="tasks") # Many to Many Relationship
+   assigned_to=models.ManyToManyField(User,related_name="tasks") 
    status=models.CharField(max_length=30,choices=STATUS_CHOICES,default='PENDING')
    title=models.CharField(max_length=250)
    description=models.TextField()
