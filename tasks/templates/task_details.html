@@ -75,10 +75,10 @@
                         <div
                         class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white"
                         >
-                        {{emp.name|slice:':1'}}
+                        {{emp.first_name|slice:':1'}}
                         </div>
                         <div>
-                            <div class="font-semibold">{{emp.name}}</div>
+                            <div class="font-semibold">{{emp.first_name}} {{emp.last_name}} </div>
                             <div class="text-gray-600">{{emp.groups.first.name|default:"No Role"}}</div>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
   
             </div>
           </div>
-          <div class="">
-            <a href='{% url "update-task" task.id %}' class="px-2 py-1 mb-1 bg-green-500">Edit</a>
+          <div class=" flex items-center gap-3">
+            <a href='{% url "update-task" task.id %}' class="px-4 py-2 rounded-md mb-1 bg-green-500">Edit</a>
           <form action='{% url "delete-task" task.id %}' method='POST'>
             {% csrf_token %}
             <button
@@ -115,12 +115,18 @@
         <!-- Assets -->
         <div class="bg-white p-6 rounded-lg shadow-sm">
           <h2 class="text-xl font-bold mb-4">ASSETS</h2>
-          <div class="space-y-4">
+          <div class="">
             <img
-              src={{task.details.asset.url}}
-              alt="Task Manager App Screenshot 1"
-              class="w-full rounded-lg"
-            />
+            src={{task.details.asset.url}}
+            alt="Task Manager App Screenshot 1"
+            class="w-full rounded-lg"
+          />
+            {% comment %} {% if task.details.asset %}
+    <img src="{{ task.details.asset.url }}" alt="Task Manager App Screenshot 1"
+              class="w-[200px] h-[150px] rounded-lg"" />
+{% else %}
+    <p class="text-gray-500">No asset available</p>
+{% endif %} {% endcomment %}
           </div>
         </div>
       </div>
